@@ -23,14 +23,16 @@ def prod(inp):
 # always be as long as the input array
 
 def prod_without_division(inp):
-    res = []
+    res = {}
     for i in range(len(inp)):
         if not i in res:
-            res.append(1)
+            res[i] = 1
         for j in range(len(inp)):
             if not i == j:
                 res[i] *= inp[j]
-    return res
+    return list(res.values())
 
 print(prod([1, 2, 3, 4, 5]) == [120, 60, 40, 30, 24])
+print(prod([3, 2, 1]) == [2, 3, 6])
 print(prod_without_division([1, 2, 3, 4, 5]) == [120, 60, 40, 30, 24])
+print(prod_without_division([3, 2, 1]) == [2, 3, 6])
