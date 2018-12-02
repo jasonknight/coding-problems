@@ -45,9 +45,15 @@ def longest_distinct_substring_fast(s,k):
         memo[c] = i # need to track the "start" offset
         new_start_position = window[0]
         if len(memo) > k:
-            #pop the last occurrence
-            key = min(memo,key=memo.get)
-            new_start_position = memo.pop(key) + 1 # i.e. advance one position past.
+            # the important moment, the dict will look like this
+            # {'a': 4, 'c': 2, 'b': 3}
+            # so the key we're looking for, to make a new start
+            # is c, of course, this new substring will not be
+            # longer than the bcb one...
+            # the order in the hash table doesn't matter,
+            # we are just tracking offsets
+            ky = min(memo,key=memo.get)
+            new_start_position = memo.pop(ky) + 1 # i.e. advance one position past.
             # remember, we store i at the key, 
         # we advance the window on each iteration
         window = (new_start_position, window[1] + 1) 
