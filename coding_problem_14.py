@@ -15,8 +15,8 @@
 # 
 # We are going to take a cartesian plane, and we are going
 # to "throw" darts at it, and if any of those "darts" could
-# be within our circle (with a radius of 1 to make it easy),
-# then we will "count" the hits, which with build our "random"
+# be within our circle (with a radius of 1 which is has to be),
+# then we will "count" the hits, which will build our "random"
 # number.
 
 import random
@@ -30,9 +30,10 @@ def hit_board(point,r):
     # with x^2 + y^2 < r^2
     return point[0] * point[0] + point[1] * point[1] < r*r
 def guess_pi():
-    tries = 1000000
+    tries = 10000000
     hits = 0
     for _ in range(tries):
+        # try messing with the radius of 1 :D
         if hit_board(throw_dart(),1):
             hits += 1
     pi_div_four = hits / tries
