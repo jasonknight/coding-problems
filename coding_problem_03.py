@@ -11,7 +11,16 @@ def serialize(root):
     return "Node('" + root.val + "'," + serialize(root.left) + "," + serialize(root.right) + ")"
 def deserialize(s):
     return eval(s)
+# This is the simple solution, using Python itself as the deserializer
+node = Node('root',Node('left',Node('left.left')),Node('right'))
+assert deserialize( serialize(node) ).left.left.val == 'left.left'
 # So, what if we can't use eval?
+# Well, we'll need to create a recursive descent parser.
+# That's just a fancy way of saying a token stream (in this case a deque)
+# where we pop tokens (one or more) that are semantically relavent.
+# We won't make it too fancy, but obviously we could create classes,
+# and functions for specific "productions". In our case, we really only
+# have 3 productions, Node, None and String. 
 def serialize2(root):
     if root == None:
         return "None"
@@ -33,18 +42,19 @@ def deserialize2(s):
     c = s.popleft()
     if c == "Node":
         val = s.popleft()
+        # In our little serialization language, a 
+        # string can only appear right after a Node
         val = parse_string(val,s)
+        # Left and Right can only be Node, or None
         left = deserialize2(s)
-        if left == "None":
-            left = None
         right = deserialize2(s)
-        if right == "None":
-            right = None
         return Node(val,left,right)
+    # We handle the None case
     if c == "None":
         return None
     raise Exception("Syntax error, expected Node, got " + c)
-node = Node('root',Node('left',Node('left.left')),Node('right'))
-assert deserialize( serialize(node) ).left.left.val == 'left.left'
 assert deserialize2( serialize2(node) ).left.left.val == 'left.left'
+# let's see if we handle string parsing
+node2 = Node('root',Node('left',Node('left left')),Node('right'))
+assert deserialize2( serialize2(node2) ).left.left.val == 'left left'
 
